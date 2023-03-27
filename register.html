@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registration and Login Form</title>
+</head>
+<body>
+	<h1>Registration Form</h1>
+	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+		<label for="fname">First name:</label><br>
+		<input type="text" id="fname" name="fname" required><br>
+		<label for="lname">Last name:</label><br>
+		<input type="text" id="lname" name="lname" required><br>
+		<label for="email">Email address:</label><br>
+		<input type="email" id="email" name="email" required><br>
+		<label for="password">Password:</label><br>
+		<input type="password" id="password" name="password" required><br>
+		<label for="cpassword">Confirm password:</label><br>
+		<input type="password" id="cpassword" name="cpassword" required><br><br>
+		<input type="submit" value="Submit">
+	</form>
+	
+
+		<?php
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  $fname = test_input($_POST["fname"]);
+			  $lname = test_input($_POST["lname"]);
+			  $email = test_input($_POST["email"]);
+			  $password = test_input($_POST["password"]);
+			  $cpassword = test_input($_POST["cpassword"]);
+
+			  if (empty($fname) || empty($lname) || empty($email) || empty($password) || empty($cpassword)) {
+			    echo "<p>All fields are required and must not be empty</p>";
+			  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			    echo "<p>Invalid email format</p>";
+			  } elseif ($password != $cpassword) {
+			    echo "<p>Password and Confirm Password fields must match</p>";
+			  } else {
+			    echo "<p>Registration successful!</p>";
+			  }
+			}
+
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
+</body>
+</html>
